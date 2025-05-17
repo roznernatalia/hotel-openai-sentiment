@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Ranking hoteli</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f4f6;
+      padding: 40px;
+      color: #333;
+    }
+    h1 {
+      color: #9c27b0;
+      text-align: center;
+    }
+    table {
+      width: 80%;
+      margin: 30px auto;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    th, td {
+      padding: 15px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #f8bbd0;
+    }
+    tr:nth-child(even) {
+      background-color: #fafafa;
+    }
+  </style>
+</head>
+<body>
+  <h1>Ranking hoteli według AI</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Hotel</th>
+        <th>Ocena (1–10)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for hotel, ocena in wyniki %}
+        <tr>
+          <td>{{ hotel }}</td>
+          <td>{{ ocena }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>

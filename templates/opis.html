@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Opis marketingowy - {{ hotel }}</title>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 40px;
+      background-color: #f2f1f4;
+      color: #2e2e2e;
+    }
+
+    h1 {
+      font-size: 28px;
+      color: #9c27b0;
+      margin-bottom: 20px;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: #6a1b9a;
+    }
+
+    h2 {
+      color: #7b1fa2;
+      font-size: 20px;
+      margin-top: 30px;
+      margin-bottom: 10px;
+    }
+
+    .opis-box {
+      background-color: #fff;
+      padding: 24px;
+      border-radius: 8px;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.04);
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+
+    .opis-box p {
+      margin: 10px 0;
+    }
+
+    .opis-box ul {
+      padding-left: 20px;
+      margin: 8px 0 16px;
+    }
+
+    .opis-box li {
+      margin-bottom: 6px;
+    }
+
+    /* Kontener przycisków */
+    .btn-row {
+      display: flex;
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    /* Styl wspólny dla <a> i <button> */
+    .btn-back,
+    .btn-opinie {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      background-color: #e91e63;
+      color: white;
+      padding: 12px 20px;
+      text-decoration: none;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    /* Efekt hover dla obu */
+    .btn-back:hover,
+    .btn-opinie:hover {
+      background-color: #c2185b;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Tytuł z nazwą hotelu -->
+    <h1>Opis wybranego hotelu: <em>{{ hotel }}</em></h1>
+
+    <!-- Opis w języku polskim -->
+    <h2>Opis w języku polskim:</h2>
+    <div class="opis-box">
+      {% for line in opis_pl.split('\n') %}
+        {% if line.strip().startswith('-') %}
+          {% if not loop.first and not opis_pl.split('\n')[loop.index0-1].strip().startswith('-') %}
+            <ul>
+          {% endif %}
+          <li>{{ line.strip().lstrip('-').strip() }}</li>
+          {% if loop.last or not opis_pl.split('\n')[loop.index0+1].strip().startswith('-') %}
+            </ul>
+          {% endif %}
+        {% else %}
+          <p>{{ line.strip() }}</p>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <!-- Opis w języku angielskim -->
+    <h2>Opis w języku angielskim:</h2>
+    <div class="opis-box">
+      {% for line in opis_en.split('\n') %}
+        {% if line.strip().startswith('-') %}
+          {% if not loop.first and not opis_en.split('\n')[loop.index0-1].strip().startswith('-') %}
+            <ul>
+          {% endif %}
+          <li>{{ line.strip().lstrip('-').strip() }}</li>
+          {% if loop.last or not opis_en.split('\n')[loop.index0+1].strip().startswith('-') %}
+            </ul>
+          {% endif %}
+        {% else %}
+          <p>{{ line.strip() }}</p>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <!-- Przyciski: powrót do wyboru hotelu oraz powrót do opinii -->
+    <div class="btn-row">
+      <a href="{{ url_for('index') }}" class="btn-back">Powrót do wyboru hotelu</a>
+
+      <form method="POST" action="{{ url_for('index') }}">
+        <input type="hidden" name="hotel" value="{{ hotel }}">
+        <button type="submit" class="btn-opinie">Powrót do opinii</button>
+      </form>
+    </div>
+
+  </div>
+</body>
+</html>

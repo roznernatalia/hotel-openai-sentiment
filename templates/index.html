@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <title>Analiza opinii hotelowych</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f6;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 960px;
+      background-color: #fff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+    }
+
+    h1 {
+      font-size: 30px;
+      color: #c2185b;
+      margin-bottom: 5px;
+      text-align: center;
+    }
+
+    p.subtitle {
+      text-align: center;
+      color: #666;
+      font-size: 15px;
+      margin-bottom: 30px;
+    }
+
+    .ranking-link {
+      display: block;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .ranking-link a {
+      background-color: #9c27b0;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 15px;
+      transition: background-color 0.3s;
+    }
+
+    .ranking-link a:hover {
+      background-color: #7b1fa2;
+    }
+
+    form {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+
+    select, button {
+      padding: 12px 16px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    select {
+      min-width: 280px;
+    }
+
+    button {
+      background-color: #e91e63;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #c2185b;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 25px;
+    }
+
+    th, td {
+      padding: 14px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f8bbd0;
+    }
+
+    .pozytywny {
+      color: #388e3c;
+      font-weight: bold;
+    }
+
+    .neutralny {
+      color: #f57c00;
+      font-weight: bold;
+    }
+
+    .negatywny {
+      color: #d32f2f;
+      font-weight: bold;
+    }
+
+    .opis-button {
+      display: block;
+      margin: 30px auto 0 auto;
+      padding: 12px 20px;
+      font-size: 16px;
+      background-color: #9c27b0;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+
+    .opis-button:hover {
+      background-color: #7b1fa2;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Nagłówek aplikacji -->
+    <h1>Analiza opinii o hotelach (AI)</h1>
+    <p class="subtitle">Wybierz hotel i sprawdź, co mówią o nim goście. Opinie są analizowane przez model AI OpenAI.</p>
+
+    <!-- Link do rankingu hoteli -->
+    <div class="ranking-link">
+      <a href="{{ url_for('ranking') }}">Zobacz ranking hoteli</a>
+    </div>
+
+    <!-- Formularz wyboru hotelu -->
+    <form method="POST">
+      <label for="hotel">Wybierz hotel:</label>
+      <select name="hotel" id="hotel" required>
+        <!-- Domyślna pusta opcja -->
+        <option disabled selected value="">-- Wybierz hotel --</option>
+        {% for hotel in hotele %}
+          <option value="{{ hotel }}" {% if hotel == wybrany_hotel %}selected{% endif %}>{{ hotel }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit">Analizuj opinie</button>
+    </form>
+
+    <!-- Jeśli wybrano hotel, wyświetl opinie -->
+    {% if wybrany_hotel %}
+      <h2>Opinie o hotelu: <strong>{{ wybrany_hotel }}</strong></h2>
+
+      {% if opinie %}
+        <table>
+          <thead>
+            <tr>
+              <th>Opinia (oryginalna)</th>
+              <th>Tłumaczenie (PL)</th>
+              <th>Sentyment</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for op in opinie %}
+              <tr>
+                <td>{{ op.tekst }}</td>
+                <td>{{ op.tlumaczenie }}</td>
+                <td class="{{ op.sentyment }}">{{ op.sentyment }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <!-- Przycisk do wygenerowania profesjonalnego opisu -->
+        <form method="POST" action="{{ url_for('opis') }}">
+          <input type="hidden" name="hotel" value="{{ wybrany_hotel }}">
+          <button type="submit" class="opis-button">Wygeneruj opis hotelu</button>
+        </form>
+      {% else %}
+        <p>Brak opinii dla tego hotelu.</p>
+      {% endif %}
+    {% endif %}
+  </div>
+</body>
+</html>
