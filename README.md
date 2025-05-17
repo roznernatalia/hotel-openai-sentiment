@@ -6,6 +6,13 @@ Użytkownik wybiera hotel, a aplikacja:
 - generuje profesjonalny opis marketingowy (wraz z listą zalet i wad),
 - tworzy ranking hoteli na podstawie ogólnej oceny AI.
 
+Aplikacja korzysta z publicznego zbioru danych Hotel_Reviews.csv zawierającego:
+- nazwę hotelu,
+- pozytywne i negatywne opinie klientów.
+
+Plik ten nie został dołączony do repozytorium ze względu na jego rozmiar (ponad 100 MB). 
+W celu lokalnego uruchomienia aplikacji należy pozyskać ten zbiór danych.
+
 Technologie:
 - Python 3.9
 - Flask (framework webowy)
@@ -18,7 +25,6 @@ Wymagania:
 - Zarejestrowane konto w OpenAI
 - Klucz API (prywatny – nie dołączony do repozytorium)
 
-Plik .env:
-W celu zachowania bezpieczeństwa klucz API nie został udostępniony. 
+Plik .env: w celu zachowania bezpieczeństwa klucz API nie został udostępniony. 
 Aby uruchomić aplikację lokalnie, należy utworzyć plik .env z zawartością: OPENAI_API_KEY=tu_wstaw_swoj_klucz_API
 
